@@ -46,3 +46,24 @@ class DeleteTaskView(DeleteView):
 
 class TagListView(ListView):
     model = Tag
+    paginate_by = 20
+
+
+class CreateTagView(CreateView):
+    model = Tag
+    fields = "__all__"
+    success_url = reverse_lazy("tag-list")
+    template_name = "tasks/tag_form.html"
+
+
+class UpdateTagView(UpdateView):
+    model = Tag
+    fields = "__all__"
+    success_url = reverse_lazy("tag-list")
+    template_name = "tasks/tag_form.html"
+
+
+class DeleteTagView(DeleteView):
+    model = Tag
+    template_name = "tasks/tag_confirm_delete.html"
+    success_url = reverse_lazy("tag-list")

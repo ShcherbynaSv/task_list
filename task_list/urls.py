@@ -26,6 +26,9 @@ from tasks.views import (
     UpdateTaskView,
     DeleteTaskView,
     TagListView,
+    CreateTagView,
+    UpdateTagView,
+    DeleteTagView,
 )
 
 urlpatterns = [
@@ -36,5 +39,8 @@ urlpatterns = [
     path("tasks/<int:pk>/undo/", undo_task, name="undo-task"),
     path("tasks/<int:pk>/update/", UpdateTaskView.as_view(), name="update-task"),
     path("tasks/<int:pk>/delete/", DeleteTaskView.as_view(), name="delete-task"),
-    path("", TagListView.as_view(), name="tag-list"),
+    path("tags/", TagListView.as_view(), name="tag-list"),
+    path("tags/create/", CreateTagView.as_view(), name="create-tag"),
+    path("tags/<int:pk>/update/", UpdateTagView.as_view(), name="update-tag"),
+    path("tag/<int:pk>/delete/", DeleteTagView.as_view(), name="delete-tag"),
 ]
