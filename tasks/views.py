@@ -1,6 +1,12 @@
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import (
+    ListView,
+    CreateView,
+    UpdateView,
+    DeleteView,
+    View
+)
 from tasks.models import Task, Tag
 
 
@@ -17,18 +23,20 @@ class CreateTaskView(CreateView):
     template_name = "tasks/task_form.html"
 
 
-def complete_task(request, pk):
-    task = get_object_or_404(Task, pk=pk)
-    task.is_done = True
-    task.save()
-    return redirect("task-list")
+class CompleteTaskView(View):
+    def post(self, request, pk):
+        task = get_object_or_404(Task, pk=pk)
+        task.is_done = True
+        task.save()
+        return redirect("task-list")
 
 
-def undo_task(request, pk):
-    task = get_object_or_404(Task, pk=pk)
-    task.is_done = False
-    task.save()
-    return redirect("task-list")
+class UndoTaskView(View):
+    def post(self, request, pk):
+        task = get_object_or_404(Task, pk=pk)
+        task.is_done = False
+        task.save()
+        return redirect("task-list")
 
 
 class UpdateTaskView(UpdateView):
