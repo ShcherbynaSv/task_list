@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h1 class="display-6 font-weight-bold">Tasks</h1>
+  </div>
+
+  <a class="btn btn-primary" href="{% url 'create-task' %}">
+    + Create Task
+  </a>
+</div>
+
+{% if task_list %}
+
+<div class="list-group">
+
+    {% for task in task_list %}
+
+    <div class="list-group-item py-3">
+      <div class="d-flex justify-content-between align-items-start">
+        <div>
+          <h5 class="mb-1">
+            {{ task.name }}
+            {% if task.is_done %}
+              <span style="color: green"><b>Done</b></span>
+            {% else %}
+              <span style="color: red"><b>Not done</b></span>
+            {% endif %}
+          </h5>
+          {% if task.content %}
+            <p>Description: {{ task.content }}</p>
+          {% endif %}
+          <p>Created: {{ task.created_at }}</p>
+          {% if task.deadline %}
+            <p style="color: brown">Deadline: {{ task.deadline }}</p>
+          {% endif %}
+          <div class="mt-1">
+            Tags:
+            {% for tag in task.tags.all %}
+              <span class="badge border text-secondary">{{ tag.name }}</span>
+            {% endfor %}
+          </div>
+          <br>
+          <a
+              class="btn btn-sm btn-outline-warning"
+              href="{% url 'update-task' task.pk %}"
+          >
+            Edit
+          </a>
+          <a
+              class="btn btn-sm btn-outline-danger"
+              href="{% url 'delete-task' task.pk %}"
+          >
+            Delete
+          </a>
+        </div>
+
+        <div>
+          {% if task.is_done %}
+            <form method="post" action="{% url 'undo-task' task.pk %}">
+              {% csrf_token %}
+              <button class="btn btn-secondary">
+                <b>Undo</b>
+              </button>
+            </form>
+          {% else %}
+            <form method="post" action="{% url 'complete-task' task.pk %}">
+              {% csrf_token %}
+              <button class="btn btn-success">
+                <b>Complete</b>
+              </button>
+            </form>
+          {% endif %}
+        </div>
+
+      </div>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% else %}
+
+<div class="alert alert-light text-center">
+    There are no tasks.
+</div>
+
+{% endif %}
+
+{% endblock %}
