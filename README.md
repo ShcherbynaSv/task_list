@@ -23,6 +23,7 @@ cd <project-directory>
 python -m venv venv
 venv\Scripts\activate
 pip install -r requirements.txt
+copy .env.example .env  # Create the local environment file
 python manage.py migrate
 python manage.py runserver
 
